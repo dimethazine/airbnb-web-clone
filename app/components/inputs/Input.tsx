@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 import { BiDollar } from "react-icons/bi";
 
@@ -24,6 +24,11 @@ const Input: React.FC<InputProps> = ({
   register,
   errors,
 }) => {
+  const [emailText, setEmailText] = useState(false);
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmailText(e.target.value.length > 0);
+  };
+
   return (
     <div className="w-full relative">
       {formatPrice && (
@@ -36,6 +41,7 @@ const Input: React.FC<InputProps> = ({
         id={id}
         disabled={disabled}
         {...register(id, { required })}
+        onChange={onInputChange}
         placeholder=" "
         type={type}
         className={`
@@ -48,7 +54,11 @@ const Input: React.FC<InputProps> = ({
       <label
         className={`absolute text-md duration-150 transform -translate-y-3 top-5 z-10 origin-[0] ${
           formatPrice ? "left-9" : "left-4"
-        } peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4`}
+        } ${
+          emailText
+            ? "scale-75 -translate-y-4"
+            : "peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+        } ${errors[id] ? "text-rose-500" : "text-zinc-500"}}`}
       >
         {label}
       </label>
